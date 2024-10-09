@@ -1,34 +1,46 @@
 import 'package:admin/controllers/menu_app_controller.dart';
 import 'package:admin/responsive.dart';
-import 'package:admin/screens/dashboard/chat_screen.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
-import 'package:admin/screens/dashboard/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'components/side_menu.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  // Define a variable to keep track of the current screen
+  Widget _currentScreen = DashboardScreen(); // Default screen
+
+  // Function to change the screen
+  void _changeScreen(Widget newScreen) {
+    setState(() {
+      _currentScreen = newScreen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: context.read<MenuAppController>().scaffoldKey,
-      drawer: SideMenu(),
+      drawer: SideMenu(onMenuItemSelected: _changeScreen), // Pass the function to SideMenu
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // We want this side menu only for large screen
+            // Show side menu only for large screens
             if (Responsive.isDesktop(context))
               Expanded(
-                // default flex = 1
-                // and it takes 1/6 part of the screen
-                child: SideMenu(),
+                // Takes 1/6 part of the screen
+                child: SideMenu(onMenuItemSelected: _changeScreen), // Pass the function here as well
               ),
             Expanded(
-              // It takes 5/6 part of the screen
+              // Takes 5/6 part of the screen
               flex: 5,
-              child: GeminiChatBot(),
+              child: _currentScreen, // Display the current screen
             ),
           ],
         ),

@@ -1,10 +1,13 @@
+import 'package:admin/screens/dashboard/chat_screen.dart';
+import 'package:admin/screens/dashboard/dashboard_screen.dart';
+import 'package:admin/screens/dashboard/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({
-    Key? key,
-  }) : super(key: key);
+  final Function(Widget) onMenuItemSelected;
+
+  SideMenu({required this.onMenuItemSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +20,28 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Profile",
-            svgSrc: "assets/icons/menu_profile.svg",
-            press: () {},
+            press: () {
+              onMenuItemSelected(DashboardScreen()); // Change to DashboardScreen
+              // Navigator.of(context).pop(); // Close the drawer
+            },
           ),
           DrawerListTile(
             title: "AI Chat",
             svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
+            press: () {
+              onMenuItemSelected(GeminiChatBot()); // Change to DashboardScreen
+              // Navigator.of(context).pop(); // Close the drawer
+            },
           ),
+          DrawerListTile(
+            title: "Profile",
+            svgSrc: "assets/icons/menu_profile.svg",
+            press: () {
+              onMenuItemSelected(UserProfileScreen()); // Change to DashboardScreen
+              // Navigator.of(context).pop(); // Close the drawer
+            },
+          ),
+
         ],
       ),
     );
