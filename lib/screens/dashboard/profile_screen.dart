@@ -12,7 +12,6 @@ class UserProfileScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            // Header(title: 'Profile', icon: Icons.person),
             Header(),
             SizedBox(height: defaultPadding),
             ProfileForm(),

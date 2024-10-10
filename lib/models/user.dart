@@ -1,10 +1,12 @@
 class User {
+  final int id;
   final String username;
   final String email;
   final String firstName;
   final String lastName;
 
   User({
+    required this.id,
     required this.username,
     required this.email,
     required this.firstName,
@@ -13,6 +15,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      id: json['id'],
       username: json['username'] ?? '',
       email: json['email'] ?? '',
       firstName: json['first_name'] ?? '',
@@ -22,6 +25,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'username': username,
       'email': email,
       'first_name': firstName,
@@ -33,14 +37,21 @@ class User {
 class AuthResponse {
   final String? accessToken;
   final String? refreshToken;
+  final User? user;
   final String? message;
 
-  AuthResponse({this.accessToken, this.refreshToken, this.message});
+  AuthResponse({
+    this.accessToken,
+    this.refreshToken,
+    this.user,
+    this.message,
+  });
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
       accessToken: json['access'],
       refreshToken: json['refresh'],
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
       message: json['message'],
     );
   }

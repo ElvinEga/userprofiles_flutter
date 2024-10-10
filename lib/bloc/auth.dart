@@ -1,5 +1,6 @@
 import 'package:admin/models/user.dart';
 import 'package:admin/network/api_service.dart';
+import 'package:admin/network/token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Events
@@ -22,50 +23,48 @@ class LoginEvent extends AuthEvent {
   LoginEvent({required this.username, required this.password});
 }
 
+class LogoutEvent extends AuthEvent {}
+
 // States
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 class AuthSuccess extends AuthState {
-  final AuthResponse response;
-  AuthSuccess(this.response);
+  final User user;
+  AuthSuccess(this.user);
 }
 class AuthFailure extends AuthState {
-  final String error;
+  final Exception error;
   AuthFailure(this.error);
 }
 
-// BLoC
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ApiService apiService;
+  final TokenManager tokenManager;
 
-  AuthBloc(this.apiService) : super(AuthInitial()) {
-    on<SignupEvent>((event, emit) async {
-      emit(AuthLoading());
-      try {
-        final response = await apiService.signup(
-          event.username,
-          event.email,
-          event.firstName,
-          event.lastName,
-          event.password,
-          event.password2,
-        );
-        emit(AuthSuccess(response));
-      } catch (e) {
-        emit(AuthFailure(e.toString()));
-      }
-    });
-
+  AuthBloc(this.apiService, this.tokenManager) : super(
+      tokenManager.user != null ? AuthSuccess(tokenManager.user!) : AuthInitial()
+  ) {
     on<LoginEvent>((event, emit) async {
       emit(AuthLoading());
       try {
         final response = await apiService.login(event.username, event.password);
-        emit(AuthSuccess(response));
+        await tokenManager.saveAuthResponse(response);
+        if (response.user != null) {
+          emit(AuthSuccess(response.user!));
+        } else {
+          emit(AuthFailure(Exception('User data not received')));
+        }
       } catch (e) {
-        emit(AuthFailure(e.toString()));
+        emit(AuthFailure(e is Exception ? e : Exception(e.toString())));
       }
     });
+
+    on<LogoutEvent>((event, emit) async {
+      await tokenManager.clearAll();
+      emit(AuthInitial());
+    });
+
   }
 }
