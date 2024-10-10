@@ -3,7 +3,6 @@ import 'package:admin/network/api_service.dart';
 import 'package:admin/network/token.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Events
 abstract class AuthEvent {}
 
 class SignupEvent extends AuthEvent {
@@ -25,15 +24,17 @@ class LoginEvent extends AuthEvent {
 
 class LogoutEvent extends AuthEvent {}
 
-// States
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
+
 class AuthLoading extends AuthState {}
+
 class AuthSuccess extends AuthState {
   final User user;
   AuthSuccess(this.user);
 }
+
 class AuthFailure extends AuthState {
   final Exception error;
   AuthFailure(this.error);
@@ -43,9 +44,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ApiService apiService;
   final TokenManager tokenManager;
 
-  AuthBloc(this.apiService, this.tokenManager) : super(
-      tokenManager.user != null ? AuthSuccess(tokenManager.user!) : AuthInitial()
-  ) {
+  AuthBloc(this.apiService, this.tokenManager)
+      : super(tokenManager.user != null
+            ? AuthSuccess(tokenManager.user!)
+            : AuthInitial()) {
     on<LoginEvent>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -65,6 +67,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await tokenManager.clearAll();
       emit(AuthInitial());
     });
-
   }
 }

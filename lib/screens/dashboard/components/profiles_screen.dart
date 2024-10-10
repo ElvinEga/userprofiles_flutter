@@ -18,12 +18,10 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
   @override
   void initState() {
     super.initState();
-    // Trigger the loading of profiles when the screen loads
     context.read<ProfileBloc>().add(LoadProfilesEvent());
   }
 
   void _showCreateUserDialog(BuildContext context) {
-    // Controllers for text fields
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
@@ -52,7 +50,6 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
         firstNameError = '';
       }
 
-      // Validate last name
       if (lastNameController.text.isEmpty) {
         lastNameError = 'Last name is required';
         isValid = false;
@@ -60,7 +57,6 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
         lastNameError = '';
       }
 
-      // Validate email
       if (emailController.text.isEmpty) {
         emailError = 'Email is required';
         isValid = false;
@@ -71,7 +67,6 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
         emailError = '';
       }
 
-      // Validate username
       if (usernameController.text.isEmpty) {
         usernameError = 'Username is required';
         isValid = false;
@@ -79,7 +74,6 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
         usernameError = '';
       }
 
-      // Validate password
       if (passwordController.text.isEmpty) {
         passwordError = 'Password is required';
         isValid = false;
@@ -106,9 +100,11 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                   controller: firstNameController,
                   decoration: InputDecoration(
                     hintText: 'First Name',
-                    errorText: firstNameError.isNotEmpty ? firstNameError : null,
+                    errorText:
+                        firstNameError.isNotEmpty ? firstNameError : null,
                   ),
                 ),
+                SizedBox(height: defaultPadding),
                 TextField(
                   controller: lastNameController,
                   decoration: InputDecoration(
@@ -116,6 +112,7 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                     errorText: lastNameError.isNotEmpty ? lastNameError : null,
                   ),
                 ),
+                SizedBox(height: defaultPadding),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -123,6 +120,7 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                     errorText: emailError.isNotEmpty ? emailError : null,
                   ),
                 ),
+                SizedBox(height: defaultPadding),
                 TextField(
                   controller: usernameController,
                   decoration: InputDecoration(
@@ -130,6 +128,7 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                     errorText: usernameError.isNotEmpty ? usernameError : null,
                   ),
                 ),
+                SizedBox(height: defaultPadding),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -154,15 +153,17 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                 if (_validateFields()) {
                   // Dispatch the CreateProfileEvent to the ProfileBloc
                   context.read<ProfileBloc>().add(CreateProfileEvent(
-                    username: usernameController.text,
-                    email: emailController.text,
-                    firstName: firstNameController.text,
-                    lastName: lastNameController.text,
-                    password: passwordController.text,
-                  ));
+                        username: usernameController.text,
+                        email: emailController.text,
+                        firstName: firstNameController.text,
+                        lastName: lastNameController.text,
+                        password: passwordController.text,
+                      ));
                   context.read<ProfileBloc>().add(LoadProfilesEvent());
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Created User: ${firstNameController.text}')),
+                    SnackBar(
+                        content:
+                            Text('Created User: ${firstNameController.text}')),
                   );
 
                   // Close the dialog
@@ -179,8 +180,6 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,23 +200,19 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                   "Users",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                ElevatedButton.icon(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: defaultPadding * 1.5,
-                      vertical: defaultPadding /
-                          (Responsive.isMobile(context) ? 2 : 1),
-                    ),
-                  ),
+                // ElevatedButton(
+                //   onPressed: () => _showCreateUserDialog(context),
+                //   child: Text('Add New'),
+                // ),
+                TextButton.icon(
                   onPressed: () => _showCreateUserDialog(context),
-                  icon: Icon(Icons.add),
-                  label: Text("Add New"),
-                ),
+                    icon: Icon(Icons.add),
+                    label: Text("Add New"),
+                )
+
               ],
             ),
-            if (state is ProfileLoading)
-              CircularProgressIndicator()
-            else if (state is ProfileLoaded)
+            if (state is ProfileLoaded)
               SizedBox(
                 width: double.infinity,
                 child: DataTable(
@@ -272,16 +267,19 @@ DataRow userDataRow(User user, BuildContext context) {
               decoration: InputDecoration(hintText: 'First Name'),
               controller: TextEditingController(text: user.firstName),
             ),
+            SizedBox(height: defaultPadding),
             TextField(
               onChanged: (value) => updatedLastName = value,
               decoration: InputDecoration(hintText: 'Last Name'),
               controller: TextEditingController(text: user.lastName),
             ),
+            SizedBox(height: defaultPadding),
             TextField(
               onChanged: (value) => updatedEmail = value,
               decoration: InputDecoration(hintText: 'Email'),
               controller: TextEditingController(text: user.email),
             ),
+            SizedBox(height: defaultPadding),
             TextField(
               onChanged: (value) => updatedUsername = value,
               decoration: InputDecoration(hintText: 'Username'),
@@ -299,19 +297,21 @@ DataRow userDataRow(User user, BuildContext context) {
           ElevatedButton(
             onPressed: () {
               // Check if fields are updated before making the API call
-              if (updatedFirstName.isNotEmpty && updatedLastName.isNotEmpty &&
-                  updatedEmail.isNotEmpty && updatedUsername.isNotEmpty) {
+              if (updatedFirstName.isNotEmpty &&
+                  updatedLastName.isNotEmpty &&
+                  updatedEmail.isNotEmpty &&
+                  updatedUsername.isNotEmpty) {
                 // context.read<ProfileBloc>().add(DeleteProfileEvent(user.id));
                 // context.read<ProfileBloc>().add(LoadProfilesEvent());
                 context.read<ProfileBloc>().add(UpdateProfileEvent(
-                  userId: user.id,
-                  updatedData: {
-                    'first_name': updatedFirstName,
-                    'last_name': updatedLastName,
-                    'email': updatedEmail,
-                    'username': updatedUsername,
-                  },
-                ));
+                      userId: user.id,
+                      updatedData: {
+                        'first_name': updatedFirstName,
+                        'last_name': updatedLastName,
+                        'email': updatedEmail,
+                        'username': updatedUsername,
+                      },
+                    ));
               }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('USer successful!')),
@@ -358,8 +358,6 @@ DataRow userDataRow(User user, BuildContext context) {
       ),
     );
   }
-
-
 
   return DataRow(
     cells: [

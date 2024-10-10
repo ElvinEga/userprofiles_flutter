@@ -16,6 +16,8 @@ class _MainScreenState extends State<MainScreen> {
   // Define a variable to keep track of the current screen
   Widget _currentScreen = DashboardScreen(); // Default screen
 
+
+
   // Function to change the screen
   void _changeScreen(Widget newScreen) {
     setState(() {

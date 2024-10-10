@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:admin/constants.dart';
 import 'package:admin/models/user.dart';
 import 'package:admin/network/token.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  static const String baseUrl = API_BASE;
   final Dio _dio;
   final TokenManager _tokenManager;
 

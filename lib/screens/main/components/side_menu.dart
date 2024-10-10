@@ -21,24 +21,28 @@ class SideMenu extends StatelessWidget {
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () {
-              onMenuItemSelected(DashboardScreen()); // Change to DashboardScreen
-              // Navigator.of(context).pop(); // Close the drawer
+              onMenuItemSelected(DashboardScreen());
             },
           ),
           DrawerListTile(
             title: "AI Chat",
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {
-              onMenuItemSelected(GeminiChatBot()); // Change to DashboardScreen
-              // Navigator.of(context).pop(); // Close the drawer
+              onMenuItemSelected(GeminiChatBot());
             },
           ),
+          // DrawerListTile(
+          //   title: "Profile",
+          //   svgSrc: "assets/icons/menu_profile.svg",
+          //   press: () {
+          //     onMenuItemSelected(UserProfileScreen()); // Change to DashboardScreen
+          //   },
+          // ),
           DrawerListTile(
-            title: "Profile",
+            title: "Logout",
             svgSrc: "assets/icons/menu_profile.svg",
             press: () {
-              onMenuItemSelected(UserProfileScreen()); // Change to DashboardScreen
-              // Navigator.of(context).pop(); // Close the drawer
+              Navigator.pushReplacementNamed(context, '/login');
             },
           ),
 
