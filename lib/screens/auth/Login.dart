@@ -84,13 +84,13 @@ class LoginScreen extends StatelessWidget {
             textInputAction: TextInputAction.next,
             cursorColor: primaryColor,
             decoration: const InputDecoration(
-              hintText: "Your email",
+              hintText: "Your Username",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
                 child: Icon(Icons.person),
               ),
             ),
-            validator: (value) => value!.isEmpty ? 'Email is required' : null,
+            validator: (value) => value!.isEmpty ? 'Username is required' : null,
           ),
           const SizedBox(height: defaultPadding),
           TextFormField(
