@@ -141,29 +141,23 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
             ElevatedButton(
               onPressed: () {
                 // Validate form fields
                 if (_validateFields()) {
                   // Dispatch the CreateProfileEvent to the ProfileBloc
                   context.read<ProfileBloc>().add(CreateProfileEvent(
-                        username: usernameController.text,
-                        email: emailController.text,
-                        firstName: firstNameController.text,
-                        lastName: lastNameController.text,
-                        password: passwordController.text,
-                      ));
+                    username: usernameController.text,
+                    email: emailController.text,
+                    firstName: firstNameController.text,
+                    lastName: lastNameController.text,
+                    password: passwordController.text,
+                  ));
                   context.read<ProfileBloc>().add(LoadProfilesEvent());
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content:
-                            Text('Created User: ${firstNameController.text}')),
+                        Text('Created User: ${firstNameController.text}')),
                   );
 
                   // Close the dialog
@@ -173,8 +167,19 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                   setState(() {});
                 }
               },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(200, 50), // Set the minimum size (width, height)
+                maximumSize: Size(400, 60), // Set the maximum size (width, height)
+              ),
               child: Text('Create'),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+
           ],
         ),
       ),
@@ -288,12 +293,6 @@ DataRow userDataRow(User user, BuildContext context) {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text('Cancel'),
-          ),
           ElevatedButton(
             onPressed: () {
               // Check if fields are updated before making the API call
@@ -304,14 +303,14 @@ DataRow userDataRow(User user, BuildContext context) {
                 // context.read<ProfileBloc>().add(DeleteProfileEvent(user.id));
                 // context.read<ProfileBloc>().add(LoadProfilesEvent());
                 context.read<ProfileBloc>().add(UpdateProfileEvent(
-                      userId: user.id,
-                      updatedData: {
-                        'first_name': updatedFirstName,
-                        'last_name': updatedLastName,
-                        'email': updatedEmail,
-                        'username': updatedUsername,
-                      },
-                    ));
+                  userId: user.id,
+                  updatedData: {
+                    'first_name': updatedFirstName,
+                    'last_name': updatedLastName,
+                    'email': updatedEmail,
+                    'username': updatedUsername,
+                  },
+                ));
               }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('USer successful!')),
@@ -321,8 +320,19 @@ DataRow userDataRow(User user, BuildContext context) {
               // Close the dialog
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(200, 50), // Set the minimum size (width, height)
+              maximumSize: Size(200, 60), // Set the maximum size (width, height)
+            ),
             child: Text('Save'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel'),
+          ),
+
         ],
       ),
     );
@@ -336,12 +346,6 @@ DataRow userDataRow(User user, BuildContext context) {
         content: Text(
             'Are you sure you want to delete "${user.firstName} ${user.lastName}"?'),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text('Cancel'),
-          ),
           ElevatedButton(
             onPressed: () {
               context.read<ProfileBloc>().add(DeleteProfileEvent(user.id));
@@ -352,8 +356,19 @@ DataRow userDataRow(User user, BuildContext context) {
               print('Deleted Use: ${user.firstName}');
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(200, 50), // Set the minimum size (width, height)
+              maximumSize: Size(400, 60), // Set the maximum size (width, height)
+            ),
             child: Text('Delete'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel'),
+          ),
+
         ],
       ),
     );
