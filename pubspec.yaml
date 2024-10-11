@@ -37,6 +37,7 @@ dependencies:
   http: ^1.2.2
   dio: ^5.7.0
   shared_preferences: ^2.3.2
+  material_dialogs: ^1.1.5
 
 dev_dependencies:
   flutter_test:

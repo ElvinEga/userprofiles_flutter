@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
             } else {
               // Small screens (mobile)
               return Center(
-                child: SingleChildScrollView(
+                child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: _buildForm(context),

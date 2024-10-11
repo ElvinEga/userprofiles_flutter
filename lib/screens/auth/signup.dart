@@ -20,7 +20,7 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
+          if (state is RegSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Signup successful!')),
             );
@@ -59,7 +59,7 @@ class SignupScreen extends StatelessWidget {
             } else {
               // Small screens (mobile)
               return Center(
-                child: SingleChildScrollView(
+                child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: _buildForm(context),
@@ -152,4 +152,6 @@ class SignupScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
